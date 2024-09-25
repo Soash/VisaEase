@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <title>Print Visa List</title>
+</head>
+<style>
+    #content{
+        padding: 30px;
+    }
+    table{
+        width: 100%;
+    }
+    table tr td:nth-child(2) {
+        width: 50%;
+    }
+    td{
+        padding: 5px;
+    }
+</style>
+<body>
+    {% comment %} <button onclick="generatePDF()" id="dl-button" style="display: none;">Generate PDF</button> {% endcomment %}
+
+<div id="content">
+    <br>
+    <p><h3 style="text-align:center; text-decoration: underline;">EMPLOYEEMENT AGREEMENT</h3></p>
+
+
+    <p style="text-align: justify">
+        HEREINAFTER REFFERED TO AS THE EMPLOER REPRESENTED BY ITS ATTORNEY <b> M/S FLY AIR INTERNATIONAL LTD,</b>  RL-1456    SHANJARI TOWER, 78, NAYAPALTAN, (4TH FLOOR), D HAKA, BANGLADESH. 
+    </p>
+
+  
+    <table>
+        <tbody>
+            <tr>
+                <td>NAME OF COMPANY</td>
+                <td><b>: {{member.visa_info.sponser_name_english}}</b></td>
+            </tr>
+            <tr>
+                <td>HEREBY APPOINTED</td>
+                <td><b>: {{member.f_name}}</b></td>
+            </tr>
+            <tr>
+                <td>HOLDER OF BANGLADESH PASSPORT NO</td>
+                <td><b>: {{member.passport_no}}</b></td>
+            </tr>
+            <tr>
+                <td>PROFESSION</td>
+                <td><b>: {{member.profession}}</b></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <p><h3 style="text-align:center">UNDER THE FOLLOWING TERMS AND CONDITIONS:</h3></p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>01</td>
+                <td colspan="2">THE EMPLOYEE IS HEREBY EMPLOYED TO RENDER HIS FULL TIME SERVICES</td>
+            </tr>
+            <tr>
+                <td>02</td>
+                <td>FOOD AND ACCOMMODATION</td>
+                <td>: FREE</td>
+            </tr>
+            <tr>
+                <td>03</td>
+                <td>AIR PASSAGE</td>
+                <td>: BORNE BY THE EMPLOYEE</td>
+            </tr>
+            <tr>
+                <td>04</td>
+                <td>DUTY HOUR</td>
+                <td>: 8 HOURS DAILY</td>
+            </tr>
+            <tr>
+                <td>05</td>
+                <td>HOLIDAY</td>
+                <td>: AS PER SAUDI LABOUR LAWS</td>
+            </tr>
+            <tr>
+                <td>06</td>
+                <td>LEAVE</td>
+                <td>: AS PER SAUDI LABOUR LAWS</td>
+            </tr>
+            <tr>
+                <td>07</td>
+                <td>OVERTIME & OTHER BENEFIT</td>
+                <td>: AS PER SAUDI LABOUR LAWS</td>
+            </tr>
+            <tr>
+                <td>08</td>
+                <td>MEDICAL FACILITIES</td>
+                <td>: FREE</td>
+            </tr>
+            <tr>
+                <td>09</td>
+                <td>PERIOD OF CONTRACT</td>
+                <td>: TWO/ONE YEARS</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>REPATRIATION ARRANGEMENT INCLUDING RETURN OF DEAD BODY & SERVICE BENEFIT TO THE LEGAL HEIR OF THE EMPLOYEE</td>
+                <td>: RESPONSIBILITY OF THE EMLOYEE</td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>OTHER TERMS & CONDITIONS NOT COVERED BY THIS AGREEMENT</td>
+                <td>: AS PER SAUDI LABOUR  LAWS</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <p style="text-align: justyfy;">
+        ALL ARTICLES CONTAINED HEREIN AS WELL OTHER TERMS AND CONDITION NOT MENTIONED IN THE AGREEMENT SHALL BE GOVERNED AND CONSTRUED IN ACCORDANCE WITH THE LAWS OF KSA.
+    </p>
+    
+    <table style="width:100%; margin-top:50px;">
+        <tbody>
+            <tr>
+                <td><h4>SIGNATURE OF FIRST PARTY</h4></td> 
+                <td><h4 style="text-align: end;">SIGNATURE OF SECOND PARTY</h4></td>
+            </tr> 
+        </tbody>
+    </table>
+
+
+
+
+
+</div>
+
+<script>
+    setTimeout(function() {
+        var button = document.getElementById('dl-button');
+        button.click();
+    }, 100);
+  </script>
+  
+    <script>
+        function generatePDF() {
+          const element = document.getElementById('content');
+          html2pdf()
+            .set({ html2canvas: { scale: 4 } }) // Adjust the scale as needed
+            .from(element)
+            .save();
+        }
+    </script>
+
+</body>
+</html>

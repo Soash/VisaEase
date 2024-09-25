@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VISA Application</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            margin: 10px 0;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #000;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover, a:focus {
+            background-color: #e0e0e0;
+        }
+
+        .selected {
+            background-color: #e0e0e0;
+        }
+        .icon {
+            margin-right: 10px;
+            font-size: 20px;
+            width: 20px;
+        }
+
+
+
+        .two td{
+            width: 20%;
+    
+        }
+
+        .div1{
+            display: flex;
+        }
+        .div1 div{
+            width: 16%;
+            margin-top: 2px;
+        }
+        .div1 div input{
+            width: 90%;
+        }
+        .sideBar{
+            padding-right: 10px;
+            border-right: 1px solid #6c757d;
+        }
+        .mainSec{
+            padding-left: 25px;
+        }
+    </style>
+</head>
+<body>
+   
+    <div style="display: flex; margin-top: 15px;">
+        <img src="{% static 'img/logo-1.png' %}" style="width: 5%;">
+        <h2 class="my-auto"><a href="{% url 'home' %}" style="color: black;">Fly Air International Limited</a></h2>
+    </div>
+
+    <hr>
+
+    <div style="display: flex;">
+        <div class="sideBar" style="width: 15%; padding: 15px;">
+            <ul>
+                <li>
+                    <a href="{% url 'visa_info' %}">
+                        <i class="fas fa-th icon"></i>
+                        Visa Receiving form
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'form_1_list' %}">
+                        <i class="fas fa-database icon"></i>
+                        Visa Receiving info
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="selected">
+                        <i class="fas fa-user icon"></i>
+                        Passenger Form
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'form_2_list' %}">
+                        <i class="fas fa-info icon"></i>
+                        Passenger info
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="fas fa-power-off icon"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mainSec" style="width: 80%;">
+            <div class="text-center bg-primary text-white p-2 mb-2" style="border-radius: 10px"> 
+                <h1>Visa Application Form Update</h1>
+            </div>
+
+
+            <form method="POST" action="{% url 'edit' serial_no=data.serial_no %}">
+                {% csrf_token %}
+
+                <hr>
+
+               <table style="width: 100%;" class="two">
+                    <tr>
+                        <td><label for="serial_no">Serial No</label></td>
+                        <td>: <input type="text" id="serial_no" name="serial_no" value="{{ data.serial_no }}" disabled></td>
+                      
+                        <td><label for="visa_no">Visa No.</label></td>
+                        <td>: <input type="text" id="visa_no" name="visa_no" value="{{ data.visa_info.visa_no }}" disabled></td>
+                    </tr>
+                </table>
+
+
+                <hr>
+
+                <div class="div1">
+                    <div><label for="f_name">Full Name</label></div>
+                    <div>: <input type="text" id="f_name" name="f_name" value="{{ data.f_name|default:'' }}"></div>
+                
+                    <div><label for="father_name">Father Name</label></div>
+                    <div>: <input type="text" id="father_name" name="father_name" value="{{ data.father_name|default:'' }}"></div>
+
+                    <div><label for="dob">Date of Birth</label></div>
+                    <div>: <input type="text" id="dob" name="dob" value="{{ data.dob }}"></div>    
+                </div>
+                <div class="div1">
+                    <div><label for="prv_nationality">Previous Nationality</label></div>
+                    <div>: <input type="text" id="prv_nationality" name="prv_nationality" value="{{ data.prv_nationality }}"></div>
+                
+                    <div><label for="prs_nationality">Present Nationality</label></div>
+                    <div>: <input type="text" id="prs_nationality" name="prs_nationality" value="{{ data.prv_nationality }}"></div>
+                </div>
+                
+                     
+                <hr>
+    
+                <div class="div1">
+                    <div><label for="sex">Sex</label></div>
+                    <div>: 
+                        <select name="sex" id="sex" style="width: 90%;">
+                            <option value="----" {% if data.sex == "----" %}selected{% endif %}>----</option>
+                            <option value="Male" {% if data.sex == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if data.sex == "Female" %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div><label for="marital_s">Marital Status</label></div>
+                    <div>: <input type="text" id="marital_s" name="marital_s" value="{{ data.marital_s }}"></div>
+                    <div><label for="sect">Sect</label></div>
+                    <div>: <input type="text" id="sect" name="sect" value="{{ data.sect }}"></div>
+                </div>
+                <div class="div1">
+                    <div><label for="religion">Religion:</label></div>
+                    <div>: <input type="text" id="religion" name="religion" value="{{ data.religion }}"></div>
+                    <div><label for="poi_1">Place of Issue:</label></div>
+                    <div>: <input type="text" id="poi_1" name="poi_1" value="{{ data.poi_1 }}"></div>
+                </div>                
+                
+                <hr>
+
+                <table style="width: 100%;" class="two">
+                    <tr>
+                        <td><label for="qualification">Qualification</label></td>
+                        <td>: <input type="text" id="qualification" name="qualification" value="{{ data.qualification }}"></td>
+                        <td><label for="profession">Profession</label></td>
+                        <td>: <input type="text" id="profession" name="profession" value="{{ data.profession }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="home_add_and_tel_no">Home Address and Telephone No</label></td>
+                        <td>: <input type="text" id="home_add_and_tel_no" name="home_add_and_tel_no" value="{{ data.home_add_and_tel_no }}"></td>
+                        <td><label for="pot">Purpose of Travel</label></td>
+                        <td>: 
+                            <select name="pot" id="pot" style="width: 64.5%;">
+                                <option value="----">----</option>
+                                <option value="WORK">WORK</option>
+                                <option value="TRANSIT">TRANSIT</option>
+                                <option value="VISIT">VISIT</option>
+                                <option value="UMRAH">UMRAH</option>
+                                <option value="RESIDENCE">RESIDENCE</option>
+                                <option value="HAJJ">HAJJ</option>
+                                <option value="DIPLOMACY">DIPLOMACY</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                
+                <hr>
+
+                <div class="div1">
+                    <div><label for="passport_no">Passport No</label></div>
+                    <div>: <input type="text" id="passport_no" name="passport_no" value="{{ data.passport_no|default:'' }}" required></div>
+                    <div><label for="date_passport_issued">Date passport issued</label></div>
+                    <div>: <input type="text" id="date_passport_issued" name="date_passport_issued" value="{{ data.date_passport_issued }}" pattern="\d{2}/\d{2}/\d{4}" placeholder="dd/mm/yyyy"></div>
+                    <div><label for="relationship">Relationship</label></div>
+                    <div>: <input type="text" id="relationship" name="relationship" value="{{ data.relationship|default:'' }}"></div>
+                    
+                </div>
+                
+                <hr>
+                
+                <div class="div1">
+                    <div><label for="dosK">Duration of stay in Kingdom</label></div>
+                    <div>: <input type="text" id="dosK" name="dosK" value="{{ data.dosK|default:'' }}"></div>
+                    <div><label for="doa">Date of Arrival</label></div>
+                    <div>: <input type="text" id="doa" name="doa" value="{{ data.doa }}"></div>
+                    <div><label for="dod">Date of Departure</label></div>
+                    <div>: <input type="text" id="dod" name="dod" value="{{ data.dod }}"></div>
+                </div>
+                
+                <hr>
+
+                <p>
+                    <b>Office Only</b> 
+                 </p>
+                 <table style="width: 100%;" class="two">
+                     {% comment %} <tr>
+                         <td><label for="auth">Authorization</label></td>
+                         <td>: <input type="text" id="auth" name="auth" value={{data.auth}}></td>
+                         <td><label for="visa_date">Visa Date</label></td>
+                         <td>: <input type="text" id="visa_date" name="visa_date" placeholder="YY/MM/DD" value="{{data.visa_date|default:''}}"></td>
+                     </tr>
+                     <tr>
+                         <td><label for="name_employer">Name of Employer</label></td>
+                         <td>: <input type="text" id="name_employer" name="name_employer" value="{{data.name_employer}}"></td>
+
+                         <td><label for="office_id">ID</label></td>
+                         <td>: <input type="text" id="office_id" name="office_id" value="{{data.office_id}}"></td>
+
+                         
+                     </tr>
+                     {% endcomment %}
+                     <tr>
+                         <td><label for="office_fee">Fee Collected</label></td>
+                         <td>: <input type="text" id="office_fee" name="office_fee" value="{{data.office_fee}}"></td>
+                         <td><label for="office_type">Type</label></td>
+                         <td>: <input type="text" id="office_type" name="office_type" value="{{data.office_type}}"></td>
+                     </tr>
+                     <tr>
+                         <td><label for="office_duration">Duration</label></td>
+                         <td>: <input type="text" id="office_duration" name="office_duration" value="{{data.office_duration}}"></td>
+                         <td><label for="office_date">Office Date</label></td>
+                         <td>: <input type="text" id="office_date" name="office_date" value="{{data.office_date}}"></td>
+                     </tr> 
+                     <tr>
+                        <td><label for="mofa_no">MOFA No</label></td>
+                        <td>: <input type="text" id="mofa_no" name="mofa_no" value="{{data.mofa_no}}"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                 </table>
+                
+                <input type="submit" value="Save" class="btn btn-primary btn-sm" style="width: 20%;">
+
+                <hr>
+            </form>
+
+
+
+        </div>
+    </div>
+
+    {% if form.errors %}
+    <div>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <script>
+        const pobInput = document.getElementById('pob');
+        const homeAddAndTelNoInput = document.getElementById('home_add_and_tel_no');
+        pobInput.addEventListener('input', function() {
+            homeAddAndTelNoInput.value = pobInput.value;
+        });
+    </script>
+        
+</body>
+</html>

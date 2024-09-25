@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VISA Info</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            margin: 10px 0;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #000;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover, a:focus {
+            background-color: #e0e0e0;
+        }
+
+        .selected {
+            background-color: #e0e0e0;
+        }
+
+        .icon {
+            margin-right: 10px;
+            font-size: 20px;
+            width: 20px;
+        }
+
+        .div1, .div2{
+            display: flex;
+        }
+        .div1 div{
+            width: 16%;
+            margin-top: 2px;
+        }
+        .div2 div{
+            width: 20%;
+            margin-top: 2px;
+        }
+        .div1 div input{
+            width: 90%;
+        }
+        .div2 div input{
+            width: 90%;
+        }
+        .sideBar{
+            padding-right: 10px;
+            border-right: 1px solid #6c757d;
+        }
+        .mainSec{
+            padding-left: 25px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div style="display: flex; margin-top: 15px;">
+        <img src="{% static 'img/logo-1.png' %}" style="width: 5%;">
+        <h2 class="my-auto"><a href="{% url 'home' %}" style="color: black;">Fly Air International Limited</a></h2>
+    </div>
+
+    <hr>
+
+    <div style="display: flex;">
+    
+        <div class="sideBar" style="width: 15%; padding: 15px;">
+            <ul>
+                <li>
+                    <a href="{% url 'visa_info' %}">
+                        <i class="fas fa-th icon"></i>
+                        Visa Receiving form
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'form_1_list' %}" class="selected">
+                        <i class="fas fa-database icon"></i>
+                        Visa Receiving info
+                    </a>
+                </li>
+                {% comment %} <li>
+                    <a href="#">
+                        <i class="fas fa-user icon"></i>
+                        Passenger Form
+                    </a>
+                </li> {% endcomment %}
+                <li>
+                    <a href="{% url 'form_2_list' %}">
+                        <i class="fas fa-info icon"></i>
+                        Passenger info
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="fas fa-power-off icon"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="mainSec" style="width: 80%;">
+            <div class="text-center bg-danger text-white p-2 mb-2" style="border-radius: 10px"> 
+                <h1>Visa Information List</h1>
+            </div>
+            <form class="d-flex mb-1" action="{% url 'form_1_search' %}" method="GET">{% csrf_token %}
+                <input class="form-control me-2" type="text" id="visa_no" name="keyword1" placeholder="Search by Visa No" aria-label="Search">
+                <input class="form-control me-2" type="text" id="serial_id" name="keyword2" placeholder="Search by Serial ID" aria-label="Search">
+                <button class="btn btn-outline-danger" type="submit">Search</button>
+            </form>
+            <table id="mytable" class="table table-striped datatable" style="width:100%;" data-page-length="5">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Serial ID</th>
+                        <th>Serial No</th>
+                        <th>Visa No</th>
+                        <th>Visa Quantity</th>
+                        <th>Sponsor ID</th>
+                        <th>Visa Issued Date</th>
+                        <th>Submitted Date</th>
+                        <th>Visa Person Name</th>
+                        <th>Actions</th>         
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visa_application in page_obj %}
+                        {% for visa_info in visa_infos %}
+                            {% if visa_application.visa_info == visa_info %}
+                                <tr>
+                                    <td>{{ visa_info.serial_id }}</td>
+                                    <td>{{ visa_application.serial_no }}</td>
+                                    <td>{{ visa_info.visa_no }}</td>
+                                    <td>{{ visa_info.visa_qnt }}</td>
+                                    <td>{{ visa_info.sponser_id|default:"" }}</td>
+                                    <td>{{ visa_info.visa_iss_dt|default:"" }}</td>
+                                    <td>{{ visa_info.submitted_date|default:"" }}</td>
+                                    <td>{{ visa_info.visa_person_name|default:"" }}</td>
+                                    <td style="display: flex;">
+                                        <a href="{% url 'pdf_for_visa_info' visa_info.serial_id %}" target="_blank" class="btn btn-outline-primary btn-sm" style="width: 45%;"><i class="fa-solid fa-print"></i></a>
+                                        <a href="{% url 'edit' visa_application.serial_no %}" class="btn btn-outline-danger btn-sm" style="width: 45%;"><i class="fa-solid fa-user"></i></a>
+                                        <a href="{% url 'edit_visa_info' visa_info.serial_id %}" class="btn btn-outline-danger btn-sm" style="width: 45%;"><i class="fa-solid fa-pen"></i></a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+                
+                
+                
+                
+                
+            </table>
+
+            <div class="d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+            
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+            
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            
+            
+            
+        
+        </div>
+        
+    </div>
+
+
+</body>

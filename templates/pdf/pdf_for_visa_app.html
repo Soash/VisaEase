@@ -1,0 +1,503 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visa App Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    #content{
+      /*  width: 75%;
+        border: 1px solid black; */
+        padding: 50px;
+    }
+    td{
+        /*border-bottom: 1px solid #ddd;*/
+        border-bottom: 1px solid black;
+        padding: 3px;
+    }
+    .table2 td{
+        border: 1px solid black;
+        padding: 8px;
+    }
+    .span{
+        border: 1px solid black;
+        padding: 2px;
+    }
+    table{
+        width: 100%;
+        border-collapse: collapse;
+        font-size:11px;
+    }
+
+
+
+
+
+
+
+
+    .container {
+        width: 100%;
+        padding: 0 15px; /* Optional: for padding inside the container */
+        box-sizing: border-box;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -15px; /* Optional: to offset padding */
+    }
+
+    .col-4 {
+        flex: 0 0 33.33%; /* 4 out of 12 columns */
+        max-width: 33.33%;
+        padding: 15px; /* Optional: for spacing between columns */
+        box-sizing: border-box;
+    }
+
+    .centered {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Optional: for vertical centering */
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .justify-end {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .small-text {
+        font-size: 12px; /* Adjust font size */
+    }
+    .bb-none td{
+        border-bottom: none;
+    }
+    .pot{
+        border: 1px solid black;
+        padding: 2px;
+        display: inline-block;
+    }
+    
+
+  </style>
+</head>
+<body>
+{% comment %} <button onclick="generatePDF()" id="dl-button" style="display: none;">Generate PDF</button> {% endcomment %}
+
+<div id="content">
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div>
+                {% comment %} <img src="{{ member.photo.url }}" width="100px"> {% endcomment %}
+                <div style="width: 100px;height: 100px;border: 1px solid black;display: flex;flex-direction: column;justify-content: center;align-items: center;">   
+                     <span dir="rtl">     صورة     </span><br> <span>Photo</span></div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div style="display: flex;justify-content: center;">
+                {% comment %} <img src="{% static 'img/logo.png' %}" width="80px"> {% endcomment %}
+                <img src="{% static 'img/logo-org.jpeg' %}" width="80px">
+            </div>
+        </div>
+        <div class="col-4">
+            <div>
+                <div style="display: flex; justify-content: end;">
+                    
+                </div>
+                <div style="text-align:center;">
+                <img src="{% static 'img/visa/' %}{{ member.serial_no }}.svg" width="200px" height="50px"> <br>
+                <span><b>{{member.mofa_no}}</b></span><br>
+                <span dir="rtl">سفارة المملكة العربية السعودية القسم القنصلي</span><br><span style="font-size: 12px;">EMBASSY OF SAUDI ARABIA <br> CONSULAR SECTION</span></div>
+            </div>
+        </div>
+    </div>
+</div>    
+
+    <table>
+        <tr>
+            <td>Full name:</td>
+            <td></td>
+            <td style="text-align:right"><b>{{member.f_name}} &nbsp;&nbsp;&nbsp; {{member.father_name}}</b></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl">السم الكامل  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Date of birth:</td>
+            <td><b>{{ member.dob|date:"d/m/Y"}}</b></td>
+            <td dir="rtl">تاريخ الولادة  <span>:</span></td>
+            <td>Place of Birth</td>
+            <td><b>{{member.home_add_and_tel_no}}</b></td>
+            <td dir="rtl">محل الولادة  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Previous nationality:</td>
+            <td><b>{{member.prv_nationality}}</b></td>
+            <td dir="rtl">الجنسية السابقة   <span>:</span></td>
+            <td>Present nationality:</td>
+            <td><b>{{member.prs_nationality}}</b></td>
+            <td dir="rtl">الجنسية الحالية  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Sex:</td>
+            <td>
+                <span class="span">MALE <span dir="rtl">ذكر</span></span>
+             
+                <span class="span">FEMALE <span dir="rtl">أنثي</span></span>
+             
+            </td>
+            <td dir="rtl">الجنس  <span>:</span></td>
+            <td>Marital Status</td>
+            <td><b>{{member.marital_s}}</b></td>
+            <td dir="rtl">الحالة الإجتماعية  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Sect.:</td>
+            <td><b>{{ member.sect }}</b></td>
+            <td dir="rtl">المـذهـب   <span>:</span></td>
+            <td>Religion:</td>
+            <td><b>{{member.religion}}</b></td>
+            <td dir="rtl">الديـانـة <span>:</span></td>
+        </tr>
+    </table>
+
+    <table>
+
+        <tr class="bb-none">
+            <td></td>
+            <td></td>
+            <td dir="rtl">مصدرة   <span>:</span></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl">المؤهل العلمي  <span>:</span></td>
+            <td></td>
+            <td></b></td>
+            <td dir="rtl">المهنـة  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Place of issue:</td>
+            <td><b>{{member.poi_1}}</b></td>
+            <td></td>
+            <td>Qualification:</td>
+            <td><b>{{member.qualification}}</b></td>
+            <td></td>
+            <td>Profession:</td>
+            <td><b>{{member.profession}}</b></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>Home address and telephone No.:</td>
+            <td><b>{{member.home_add_and_tel_no}}</b></td>
+            <td dir="rtl">عنوان المنزل ورقم التلفون   <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Business address and telephone No.:</td>
+            <td><b>M/S FLY AIR INTERNATIONAL LTD, RL-1456 SHANJARI TOWER, 78, NAYAPALTAN, (4TH FLOOR), DHAKA, BANGLADESH</b></td>
+            <td dir="rtl">عنوا ان الشركة (المؤسسة) ورقم التلفون     <span>:</span></td>
+        </tr>
+        <tr style="height: 50px;">
+            <td>Purpose of travel:</td>
+            <td>   
+                <span class="pot">    <span dir="rtl">      عمل      </span> <br> <span>   Work      </span>        </span> 
+                <span class="pot"><span dir="rtl">     زيارة     </span><br><span>   Visit     </span></span> 
+                <span class="pot"><span dir="rtl">     مرور      </span><br><span>  Transit    </span></span> 
+                <span class="pot"><span dir="rtl">     عمـرة     </span><br><span>  Umrah      </span></span> 
+                <span class="pot"><span dir="rtl">   للإقامة      </span><br><span>  Residence  </span></span> 
+                <span class="pot"><span dir="rtl">     حــج      </span><br><span>  Hajj  </span></span> 
+                <span class="pot"><span dir="rtl">   دبلوماسية       </span><br><span>  Diplomacy   </span></span> 
+            </td>
+            <td dir="rtl">الغاية من السفر    <span>:</span></td>
+        </tr>
+    </table>
+
+    <table>
+        <tr class="bb-none">
+            <td></td>
+            <td></td>
+            <td dir="rtl">  محل الإصدار  <span>:</span></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl"> تاريخ الإصدار <span>:</span></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl">  رقم الجواز  <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Place of issue:</td>
+            <td><b>{{member.poi_2}}</b></td>
+            <td></td>
+            <td>Date passport issued:</td>
+            <td id="pp-issue"><b>{{member.date_passport_issued}}</b></td>
+            <td></td>
+            <td>Passport No.:</td>
+            <td><b>{{member.passport_no}}</b></td>
+            <td></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>Date of passport's expiry:</td>
+            <td></td>
+            <td id="pp-expiry"><b></b></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl">  تاريخ إنتهاء صلاحية الجواز   <span>:</span></td>
+        </tr>
+
+    </table>
+    <table>
+        <tr>
+            <td>Duration of stay in Kingdom:</td>
+            <td><b>{{member.dosK}}</b></td>
+            <td dir="rtl">  مدة الإقامة بالمملكة  <span>:</span></td>
+
+            <td>Date of arrival:</td>
+            <td><b>{{member.doa|date:"d/m/Y"}}</b></td>
+            <td dir="rtl">  تاريخ الوصول  <span>:</span></td>
+
+            <td>Date of departure:</td>
+            <td><b>{{member.dod|date:"d/m/Y"}}</b></td>
+            <td dir="rtl">  تاريخ المغادرة  <span>:</span></td>
+        </tr>
+    </table>
+    <table>
+
+        <tr class="bb-none">
+            <td dir="rtl">    تاريخ   <span>:</span></td>
+            <td dir="rtl"><span>( )     ايصال رقم        </span></td>
+            <td dir="rtl">   تاريخ        <span>:  </span></td>
+            <td dir="rtl"><span>( )</span>        بشيك رقم     </td>
+            <td dir="rtl"><span>( )</span>      نقداً         </td>
+            <td dir="rtl"><span>( )</span>   مجاملة   </td>
+            <td dir="rtl"> طريقة الدفع   <span>:</span></td>  
+
+        </tr>
+
+        <tr>
+            <td>Mode of Payment:</td>
+            <td>( ) Free</td>
+            <td>( ) Cash</td>
+            <td>( ) Cheque</td>
+            <td>Date:</td>
+            <td>( ) No.</td>
+            <td>Date:</td>
+        </tr>
+        <tr>
+    </table>        
+    <table>
+
+        </tr>
+        <tr>
+            <td>Relationship:</td>
+            {% comment %} <td><b>{{member.relationship}}</b></td> {% endcomment %}
+            <td></td>
+            <td dir="rtl">    صلتـه   <span>:</span></td>
+            <td></td>
+            <td></td>
+            <td dir="rtl">  إسم المحرم   <span>:</span></td>
+        </tr>
+        <tr>
+            <td>Destination:</td>
+            {% comment %} <td><b>{{member.destination}}</b></td> {% endcomment %}
+            <td><b>DAC-RUH</b></td>
+            <td dir="rtl">    جهة الوصول بالمملكة  <span>:</span></td>
+            <td>Carrier's name:</td>
+            {% comment %} <td><b>{{member.carriers_name}}</b></td> {% endcomment %}
+            <td><b>SV/BG</b></td>
+            <td dir="rtl">  اسم الشركة الناقلة   <span>:</span></td>
+        </tr>
+        </table>
+       
+        <table class="table2">
+            <tr>
+                <td colspan="2" style="border-right:none; border-top:none;">Dependents traveling in the same passport:</td>
+                <td dir="rtl" colspan="2" style="border-left:none; border-top:none;">  إيضاحات تخص أفراد العائلة (المضافين) علي نفس جواز السفر  <span>:</span> </td>
+            </tr>
+            <tr>
+                <td><span>   نوع الصلة    </span><br>Relationship</td>
+                <td><span>    تــاريخ الميــلاد   </span><br>Date of Birth</td>
+                <td><span>     الجنـــس    </span> <br>Sex</td>
+                <td><span>   الاسم بـالكــامل  </span><br>Full name</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td> <div style="display: flex;gap: 25px;"><div>City:</div><div>{{member.visa_info.sponser_address}}</div></div></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="display: flex;gap: 25px; border: none;"><div>TEL:</div><div>{{member.visa_info.sponser_phone}}</div></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="padding: 12px;"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="padding: 12px;"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-left:none; border-right:none;">Name and address of company or individual in the kingdom:</td>
+                
+                <td dir="rtl" colspan="2" style="border-left:none; border-right:none;">  اسم وعنوان الشركة أو اسم الشخص/ وعنوان بالمملكة:/    </td>
+            </tr>
+            <tr>
+                <td style="border-left:none; border-right:none; text-align: center;" colspan="3"><b>{{member.visa_info.sponser_name_english}}</b></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-left:none; border-right:none; border-bottom:none;">The undersigned hereby certify that all the information I have provided are correct. <br> I will abide by the laws of the Kingdom during the period of my residence in it.</td>
+                <td dir="rtl" colspan="2" style="border-left:none; border-right:none; border-bottom:none;">  أنا الموقع أدناه أقر بأن كل المعلومات التي دونها صحيصة.             <br>              وسأكون ملتزما بقوانين المملكة أثناء فترة وجودي بها   </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;"></td>
+                <td dir="rtl" style="border-bottom:none;"> التاريخ  <span>:</span></td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;"></td>
+                <td dir="rtl" style="border-bottom:none;"> التاريخ  <span>:</span></td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;"><b></b></td>
+                <td dir="rtl" style="border-bottom:none;"> التاريخ  <span>:</span></td>
+            </tr>
+            <tr>
+                <td style="border-bottom:none;">Date:</td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;">Signature:</td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;"></td>
+                <td style="border-bottom:none;">Name</td>
+                <td style="border-bottom:none;"><b>{{member.f_name}}</b></td>
+                <td>:</span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><u>For official use only</u></td>
+                <td dir="rtl"><u>     للاستعمال الرسمى فقط    </u><span>:</span></td>
+            </tr>
+        </table>
+
+        <table>
+            <tr></tr>
+            <tr>
+                <td>Date: <span dir="rtl">   هــــ  </span></td>
+                {% comment %} <td><b>{{ hijri_date }}</b></td> {% endcomment %}
+                <td><b>{{ member.visa_info.visa_iss_dt }}</b></td>
+                <td dir="rtl">  تاريخه   <span>:</span></td>
+                <td>Authorization:</td>
+                <td><b>{{member.visa_info.visa_no}}</b></td>
+                <td dir="rtl">  رقم الامر المعتمد عليه في إعطاء التأشيرة    <span>:</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td dir="rtl"><b>{{member.visa_info.sponser_name_arabic}}</b></td>
+                <td></td>
+                <td></td>
+                <td dir="rtl">  لزيارة – العمل لدي  <span>:</span></td>
+            </tr>
+            <tr>
+                <td>Date:</td>
+                <td>{{member.office_date}}</td>
+                <td dir="rtl">  وتاريخ  <span>:</span></td>
+                <td>Visa No.:</td>
+                <td>{{member.visa_info.visa_no}}</td>
+                <td dir="rtl">   أشر له برقم  <span>:</span></td>
+            </tr>
+            <tr>
+                <td>FEE COLLECTED &nbsp; &nbsp; &nbsp; &nbsp; {{member.office_fee}}</td>
+                <td dir="rtl"> المبلغ المحصل  </td>
+                <td>Type: &nbsp; &nbsp; &nbsp; &nbsp; {{member.office_type}}</td>
+                <td dir="rtl">  نوعها   <span>:</span></td>
+                <td>Duration: &nbsp; &nbsp; &nbsp; &nbsp; {{member.office_duration}}</td>
+                <td dir="rtl">  مدتها:   <span>:</span></td>
+            </tr>
+        </table>
+
+        <div style="text-align: center;">ID{{member.visa_info.sponser_id}}</div>
+
+        <div style="display: flex;justify-content: space-between; margin-top: 20px;">
+            <span><span dir="rtl">رئيس القسم القنصلي</span> <br> <span>Head of consular section</span></span>
+            <span><span dir="rtl">مـدقق البيانات</span> <br> <span>Checked by</span></span>
+        </div>
+
+        <div style="display: flex;justify-content: center">
+            <img src="{% static 'img/pp/' %}{{ member.serial_no }}.svg" width="200px" height="50px">
+        </div>
+    
+
+
+
+  </div>
+
+<script>
+    setTimeout(function() {
+        var button = document.getElementById('dl-button');
+        button.click();
+    }, 100);
+</script>
+
+<script>
+function generatePDF() {
+    const element = document.getElementById('content');
+    html2pdf()
+    .set({ html2canvas: { scale: 4 } }) // Adjust the scale as needed
+    .from(element)
+    .save();
+}
+</script>
+
+<script>
+    // Function to add 10 years to the issue date
+    function addTenYears() {
+        // Get the issue date text
+        const issueDateText = document.getElementById('pp-issue').innerText;
+
+        // Parse the date assuming it's in DD/MM/YYYY format
+        const [day, month, year] = issueDateText.split('/').map(Number);
+        let originalDate = new Date(year, month - 1, day-1); // Month is 0-indexed
+
+        // Add 10 years to the original date
+        let newDate = new Date(originalDate.setFullYear(originalDate.getFullYear() + 10));
+
+        // Handle potential leap year issue
+        if (originalDate.getMonth() !== newDate.getMonth()) {
+            newDate.setDate(0); // Adjust to the last day of the previous month (February 28)
+        }
+
+        // Format the new date as DD/MM/YYYY
+        const newDateText = `${String(newDate.getDate()).padStart(2, '0')}/${String(newDate.getMonth() + 1).padStart(2, '0')}/${newDate.getFullYear()}`;
+
+        // Set the new date in the expiry cell
+        document.getElementById('pp-expiry').innerHTML = `<b>${newDateText}</b>`;
+    }
+
+    // Run the function when the page loads
+    window.onload = addTenYears;
+</script>
+
+</body>
+</html>
+
+
+
+

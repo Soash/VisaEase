@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Visa List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<style>
+    #content{
+        padding: 30px;
+    }
+    table{
+        width: 100%;
+    }
+    td:nth-child(2){
+        width: 40%;
+    }
+</style>
+<body>
+    {% comment %} <button onclick="generatePDF()" id="dl-button" style="display: none;">Generate PDF</button> {% endcomment %}
+    <br><br><br>
+
+<div id="content">
+    <br>
+    <div style="display: flex; justify-content: center;">
+        <div><img src="{% static 'img/logo-1.png' %}" width="150px"></div>
+        <div>
+            <h1 style="text-align:center; font-size: 25px; font-style: bold;">FLY AIR INTERNATIIONAL LTD</h1>
+            <h4 style="text-align:right; font-size: 15px; margin-top: 30px;">RECRUITING LICENCE NO : RL-1456</h4>
+        </div>
+    </div>
+    <p>
+        TO,<br>
+        HIS EXCELLENCY THE CHIEF OF CONSULATE SECTION<br>
+        THE ROYAL EMBASSY OF SADUI ARABIA, DHAKA,<br><br>
+
+        EXCELANCY, <br><br>
+
+        <div style="text-align: justify;">
+            WITH DUE RESPECT WE ARE SUBMITTING ONE PASSPORT FOR WORK VISA WITH ALL NECESSARY DOCUMENTS AND PARTICULARS MENTIONED AT BELOW. KNOWING ALL INSTRUCTIONS AND REGULATIONS OF THE CONSULATE SECTION.  
+        </div>
+    </p>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>1.</td>
+                <td>NAME OF THE EMPLOYER</td>
+                <td><b>: {{member.visa_info.sponser_name_english}}</b></td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td><span></span>VISA NO. WITH DATE</td>
+                {% comment %} <td><b><span style="width: 25%; display: inline-block;">: {{member.visa_no}}</span> <span>Date: {{hijri_date}}</span></b></td> {% endcomment %}
+                <td><b><span style="width: 25%; display: inline-block;">: {{member.visa_info.visa_no}}</span> <span>Date: {{member.visa_info.visa_iss_dt}}</span></b></td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>FULL NAME OF THE EMPLOYEE</td>
+                <td><b>: {{member.f_name}}</b></td>
+            </tr>
+            <tr>
+                <td>4.</td>
+                <td>PASSPORT NO. WITH DATE</td>
+                <td><b><span style="width: 25%; display: inline-block;">: {{member.passport_no}}</span> <span>Date: {{member.date_passport_issued|date:"d/m/Y"}}</span></b></td>
+            </tr>
+            <tr>
+                <td>5.</td>
+                <td>PROFESSION</td>
+                <td><b>: {{member.profession}}</b></td>
+            </tr>
+            <tr>
+                <td>6.</td>
+                <td>RELIGION</td>
+                <td><b>: {{member.religion}}</b></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="font-size: 15px; text-align: justify;">
+        WE DO HEREBY CONFIRM AND DECLARE THAT THE RELIGION STATED IN THE VISA FORM AND FORWARDING LETTERIS FULLY CORRECT. 
+        WE ALSO UNDERTAKE WITH OUR OWN RESPONSIBILITY TO CANCEL THE VISA AND TO STOP FUNCTIONING WITH OUR OFFICE, IF THE STATEMENT IS FOUND INCORRECT. <br>
+
+        WE THEREFORE REQUEST YOUR EXCELLENCY TO KINDLY ISSUE WORK VISA OUT OF .......... VISAS AND OBLIGE THEREBY. 
+        
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 50px;">
+            <div>EMB. SL. NO. ...........................</div>
+            <div>YOURS FAITHFULLY </div>
+        </div>  
+    </p>
+
+
+</div>
+
+<script>
+    setTimeout(function() {
+        var button = document.getElementById('dl-button');
+        button.click();
+    }, 100);
+  </script>
+  
+
+    <script>
+        function generatePDF() {
+          const element = document.getElementById('content');
+          html2pdf()
+            .set({ html2canvas: { scale: 4 } }) // Adjust the scale as needed
+            .from(element)
+            .save();
+        }
+    </script>
+
+</body>
+</html>

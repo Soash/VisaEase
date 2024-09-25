@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Visa Info</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<style>
+    #content{
+        padding: 30px;
+    }
+</style>
+<body>
+    {% comment %} <button onclick="generatePDF()" id="dl-button" style="display: none;">Generate PDF</button> {% endcomment %}
+    <br><br><br>
+
+<div id="content">
+
+    <div style="display: flex; justify-content: center;">
+        <div><img src="{% static 'img/logo-1.png' %}" width="150px"></div>
+    </div>
+
+
+    <div>
+        <h3 style="text-align: center;">Visa Information</h3>
+    </div>
+
+    <div>
+        <p><b>Serial No:</b> {{member.serial_id}}</p>
+        <p><b>Visa Quantity:</b> {{member.visa_qnt}}</p>
+        <p><b>Visa Number:</b> {{member.visa_no}}</p>
+        
+        <p><b>Visa Issue Date:</b> {{member.visa_iss_dt}} </p>
+        <p><b>Submitted Date:</b> {{member.submitted_date}}</p>
+        <p><b>Destination:</b> {{member.destination}}</p>
+
+        <p><b>Visa Submitted Person Name:</b> {{member.visa_person_name}}</p>
+        <p><b>Village:</b> {{member.village}}</p>
+        <p><b>Post Office:</b> {{member.post_office}}</p>
+        <p><b>Thana:</b> {{member.thana}}</p>
+        <p><b>District:</b> {{member.district}}</p>
+        <p><b>Phone No:</b> {{member.phone_no}}</p>
+        <p><b>Mobile:</b> {{member.mobile}}</p>
+
+        <p><b>Sponser Name (English):</b> {{member.sponser_name_english}}</p>
+        <p><b>Sponser Name (Arabic):</b> {{member.sponser_name_arabic}}</p>
+        <p><b>Sponser Address:</b> {{member.sponser_address}}</p>
+        <p><b>Sponser Phone:</b> {{member.sponser_phone}}</p>
+        <p><b>Sponsor Id:</b> {{member.sponser_id}}</p>
+        
+        <p><b>Sender Name:</b> {{member.sender_name}}</p>
+        <p><b>Sender Address:</b> {{member.sender_address}}</p>
+        <p><b>Sender Phone:</b> {{member.sender_phone}}</p>
+    </div>
+
+             
+                              
+</div>
+
+<script>
+    setTimeout(function() {
+        var button = document.getElementById('dl-button');
+        button.click();
+    }, 100);
+</script>
+  
+    <script>
+        function generatePDF() {
+          const element = document.getElementById('content');
+          html2pdf()
+            .set({ html2canvas: { scale: 4 } }) // Adjust the scale as needed
+            .from(element)
+            .save();
+        }
+    </script>
+
+</body>
+</html>
