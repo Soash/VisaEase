@@ -3,5 +3,5 @@ services:
     name: project
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn project.wsgi:application"
+    startCommand: "gunicorn visa_prj.wsgi:application"
 
